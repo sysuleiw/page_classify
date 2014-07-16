@@ -31,8 +31,9 @@ def get_classify(tuple_cont):
         if jaro(Config.ipc_r_kw.value[0], tuple_cont[0]) > Config.edit_dist_benchmark:
             Config.ipc_list_url.append(tuple_cont[1] + '\n')
     except:
-        print '#############################################'
-        print Config.ipc_r_kw.value[1]
+        # print '#############################################'
+        # print Config.ipc_r_kw.value[1]
+        pass
 
 
 def main():
@@ -65,7 +66,7 @@ def main():
         pool.map(get_classify, page_content)
         write_file = Config.edit_dist + tuple_cont[1] + '.txt'
         file.file_writelines(write_file, Config.ipc_list_url)
-        print 'idx:' + str(idx)
+        # print 'idx:' + str(idx)
 
     print time.time() - start
 

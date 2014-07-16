@@ -30,7 +30,13 @@ class Config(object):
 
     filter_head = re.compile(r'(<head>[\s\S]*</head>)|\s+')  # 过滤head中的内容,降低差异度
     # 过滤掉body中的a链接,降低差异度
-    filter_anchor = re.compile('<a[\s\S]*?>[\s\S]*?<\/a>')
+    filter_anchor = re.compile(r'<a[\s\S]*?>[\s\S]*?</a>')
+
+    # 计算白名单所有网页的hash值使用
+    ipc_simhash_list = multiprocessing.Manager().list()
+
+    # 存放simhash计算结果
+    simhash_file = './simhash/'
 
 
 class FileOper(object):
@@ -44,7 +50,8 @@ class FileOper(object):
         '''
         try:
             with open(file_path, 'r') as f:
-                return f.read().replace('\n', '').strip()  # 首先过滤字符串前后空格
+                # 首先过滤字符串前后空格
+                return f.read().replace('\n', '').strip().lower()
         except:
             pass
 
@@ -54,7 +61,8 @@ class FileOper(object):
         result = []
         with open(file_path, 'r') as f:
             for line in f.readlines():
-                result.append(line.replace('\n', '').strip())  # 首先过滤字符串前后空格
+                # 首先过滤字符串前后空格
+                result.append(line.replace('\n', '').strip().lower())
         return result
 
     def file_writelines(self, file_path, lines):
